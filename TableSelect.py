@@ -61,10 +61,10 @@ class TableSelect(Select):
                 if has_id:
                     final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
                 item = self.choices.queryset.get(pk=pk)
-                cb = RadioSelect()
-                option_value = force_text(pk)
-                rendered_cb = cb.render(name, option_value)
-                rb = '<input id={} name={} value={} type="radio">'.format(final_attrs['id'], name, pk)
+                if pk == value:
+                    rb = '<input id={} name={} value={} type="radio" checked="checked">'.format(final_attrs['id'], name, pk)
+                else:
+                    rb = '<input id={} name={} value={} type="radio">'.format(final_attrs['id'], name, pk)
                 output.append('<tr><td>%s</td>' % rb)
                 for attr in self.item_attrs:
                     if callable(attr):
@@ -77,3 +77,4 @@ class TableSelect(Select):
                 output.append('</tr>')
         output.append('</tbody>')
         return ''.join(output)
+
