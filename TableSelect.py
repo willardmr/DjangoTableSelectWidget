@@ -53,7 +53,6 @@ class TableSelect(Select):
         output = []
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name)
-        str_value = force_text(value)
         for i, (pk, item) in enumerate(self.choices):
             if pk:
                 # If an ID attribute was given, add a numeric index as a suffix,
