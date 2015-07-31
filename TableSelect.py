@@ -62,9 +62,10 @@ class TableSelect(Select):
                     final_attrs = dict(final_attrs, id='%s_%s' %
                                        (attrs['id'], i))
                 item = self.choices.queryset.get(pk=pk)
-                if pk == int(value):
-                    rb = '<input id={} name={} value={} type="radio" \
-                    checked="checked">'.format(final_attrs['id'], name, pk)
+                if value:
+                    if pk == int(value):
+                        rb = '<input id={} name={} value={} type="radio" \
+                        checked="checked">'.format(final_attrs['id'], name, pk)
                 else:
                     rb = '<input id={} name={} value={} \
                     type="radio">'.format(final_attrs['id'], name, pk)
@@ -80,4 +81,3 @@ class TableSelect(Select):
                 output.append('</tr>')
         output.append('</tbody>')
         return ''.join(output)
-
