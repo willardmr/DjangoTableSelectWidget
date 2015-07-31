@@ -55,15 +55,19 @@ class TableSelect(Select):
         final_attrs = self.build_attrs(attrs, name=name)
         for i, (pk, item) in enumerate(self.choices):
             if pk:
-                # If an ID attribute was given, add a numeric index as a suffix,
-                # so that the checkboxes don't all have the same ID attribute.
+                # If an ID attribute was given, add a numeric index
+                # as a suffix, so that the checkboxes don't all have
+                # the same ID attribute.
                 if has_id:
-                    final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
+                    final_attrs = dict(final_attrs, id='%s_%s' %
+                                       (attrs['id'], i))
                 item = self.choices.queryset.get(pk=pk)
-                if pk == value:
-                    rb = '<input id={} name={} value={} type="radio" checked="checked">'.format(final_attrs['id'], name, pk)
+                if pk == int(value):
+                    rb = '<input id={} name={} value={} type="radio" \
+                    checked="checked">'.format(final_attrs['id'], name, pk)
                 else:
-                    rb = '<input id={} name={} value={} type="radio">'.format(final_attrs['id'], name, pk)
+                    rb = '<input id={} name={} value={} \
+                    type="radio">'.format(final_attrs['id'], name, pk)
                 output.append('<tr><td>%s</td>' % rb)
                 for attr in self.item_attrs:
                     if callable(attr):
