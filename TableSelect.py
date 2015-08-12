@@ -33,7 +33,7 @@ class TableSelect(Select):
         if value is None:
             value = []
         output = []
-        output.append('<table id=%s class="display">' % escape(name))
+        output.append('<table id={} class="display">'.format(escape(name)))
         head = self.render_head()
         output.append(head)
         body = self.render_body(name, value, attrs)
@@ -45,7 +45,7 @@ class TableSelect(Select):
         output = []
         output.append('<thead><tr><th class="no-sort"></th>')
         for item in self.item_attrs:
-            output.append('<th>%s</th>' % escape(item.capitalize()))
+            output.append('<th>{}</th>'.format(clean_underscores(escape(item))))
         output.append('</tr></thead>')
         return ''.join(output)
 
@@ -59,17 +59,15 @@ class TableSelect(Select):
                 # as a suffix, so that the checkboxes don't all have
                 # the same ID attribute.
                 if has_id:
-                    final_attrs = dict(final_attrs, id='%s_%s' %
-                                       (attrs['id'], i))
+                    final_attrs = dict(final_attrs, id='{}_{}'.format(attrs['id'], i))
                 item = self.choices.queryset.get(pk=pk)
-                if value:
-                    if pk == int(value):
+                if value and pk == int(value):
                         rb = '<input id={} name={} value={} type="radio" \
                         checked="checked">'.format(final_attrs['id'], name, pk)
                 else:
                     rb = '<input id={} name={} value={} \
                     type="radio">'.format(final_attrs['id'], name, pk)
-                output.append('<tr><td>%s</td>' % rb)
+                output.append('<tr><td>{}</td>'.format(rb))
                 for attr in self.item_attrs:
                     if callable(attr):
                         content = attr(item)
@@ -77,7 +75,15 @@ class TableSelect(Select):
                         content = getattr(item, attr)()
                     else:
                         content = getattr(item, attr)
-                    output.append('<td>%s</td>' % escape(content))
+                    output.append('<td>{}</td>'.format(escape(content)))
                 output.append('</tr>')
         output.append('</tbody>')
         return ''.join(output)
+        
+def clean_underscores(string):
+    """
+    Helper function to clean up table headers.  Replaces underscores
+    with spaces and capitalizes words.
+    """
+    s = capwords(string.replace("_", " "))
+    return s
