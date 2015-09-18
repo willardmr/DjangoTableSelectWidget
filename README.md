@@ -5,7 +5,7 @@ Example form field:
 ```python
 items = forms.ModelChoiceField(
         queryset=myqueryset, widget=widgets.TableSelect(
-        item_attrs=('tablecolumn1', 'tablecolumn2')))
+        item_attrs=['tablecolumn1', 'tablecolumn2']))
 ```
         
 Render it normally with a Django form.
